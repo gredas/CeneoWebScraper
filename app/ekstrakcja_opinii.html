@@ -1,0 +1,36 @@
+{% extends 'basic.html' %}
+{% block title %)Opis projektu}
+{% block content %}
+    <h1>Ekstrakcja opinii</h1>
+
+    <form id="extractionForm">
+      <div class="form-group">
+        <label for="productId">ID produktu z Ceneo:</label>
+        <input type="text" class="form-control" id="productId" name="productId" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Uruchom proces ekstrakcji</button>
+    </form>
+  </div>
+  {% endblock %}
+{% scriptblock %}
+  <script>
+    document.getElementById('extractionForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Zapobiegamy domyślnemu zachowaniu formularza
+  
+      var productId = document.getElementById('productId').value;
+      var url = "https://www.ceneo.pl/" + productId;
+  
+      fetch(url)
+        .then(function(response) {
+          if (response.ok) {
+            window.location.href = url; // Przekierowanie na podaną stronę
+          } else {
+            throw new Error('Błąd 404 - Nie znaleziono strony produktu');
+          }
+        })
+        .catch(function(error) {
+          alert(error.message); // Wyświetlanie komunikatu o błędzie
+        });
+    });
+  </script>
+{% endblock %}
